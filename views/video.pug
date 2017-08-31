@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1 List of Videos
+  ul
+    each file in files
+      li
+        a(href='/video/' + file )= file

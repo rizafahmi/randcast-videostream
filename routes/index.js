@@ -2,12 +2,19 @@ var express = require('express')
 const fs = require('fs')
 var router = express.Router()
 
-/* GET home page. */
+const destinationFolder = '/Users/riza/Desktop'
+
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' })
 })
 router.get('/video', (req, res) => {
-  const path = '/Users/riza/Desktop/node.mp4'
+  // listing all mp4 files
+  const files = fs.readdirSync(destinationFolder)
+  const filteredFiles = files.filter(file => file.indexOf('.mp4') > -1)
+  res.render('video', { files: filteredFiles })
+})
+router.get('/video/:filename', (req, res) => {
+  const path = `${destinationFolder}/${req.params.filename}`
   const stats = fs.statSync(path)
   const fileSize = stats.size
   const range = req.headers.range
